@@ -6,10 +6,11 @@ class Vector {
     this.color = [random(255), random(255), random(255)];
   }
 
-  show() {
-    stroke(this.color);
-    fill(this.color);
-    circle(this.x, this.y, this.r);
+  show(f = this.color, s = this.color, r = this.r) {
+    fill(f);
+    stroke(s);
+    if (f === "noFill") noFill();
+    circle(this.x, this.y, r);
   }
 
   lerp(v, split = .5) {
