@@ -1,12 +1,12 @@
 class Vector {
-  constructor(x, y, r = 5) {
+  constructor(x, y, r = 10) {
     this.x = x;
     this.y = y;
     this.r = r;
     this.color = [random(255), random(255), random(255)];
   }
 
-  show(f = this.color, s = this.color, r = this.r) {
+  show(f = this.color, s = "black", r = this.r) {
     fill(f);
     stroke(s);
     if (f === "noFill") noFill();
@@ -18,11 +18,19 @@ class Vector {
   }
 
   distanceTo(v) {
-    return Math.sqrt(Math.pow(v.x - this.x, 2) + Math.pow(v.y - this.y, 2));
+    return Vector.distance(this, v);
   }
 
   slopeWith(v) {
-    return (v.y - this.y) / (v.x - this.x);
+    return Vector.slope(this, v);
+  }
+
+  static distance(v1, v2) {
+    return Math.sqrt(Math.pow(v2.x - v1.x, 2) + Math.pow(v2.y - v1.y, 2))
+  }
+
+  static slope(v1, v2) {
+    return (v2.y - v1.y) / (v2.x - v1.x)
   }
 
   static invertSlope(m) {

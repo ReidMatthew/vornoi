@@ -7,7 +7,7 @@ function setup() {
 function draw() {
 	basicDraw();
 	showVectors(5)
-	circ(vectors[0], vectors[1], vectors[2])
+	isDelauny(vectors[0], vectors[1], vectors[2])
 }
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= HELPERS =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= \\

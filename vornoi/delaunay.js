@@ -1,4 +1,4 @@
-function circ(v1, v2, v3) {
+function isDelauny(v1, v2, v3) {
     // find the midpoint between two points (twice)
     // this line's slopes will always be tangent to the circle at the points perp from the mid
     // the intersection of two lines whos slopes are tangent to the circle will be the centre/ center 
@@ -8,22 +8,19 @@ function circ(v1, v2, v3) {
     mid2.m = Vector.invertSlope(mid2.slopeWith(v1));
 
     const centre = intersect(mid1, mid2); // this is the name for the center point in a circle
-
-    let color = "lime",
-        r = centre.distanceTo(v1);
+    centre.r = centre.distanceTo(v1);
+    
+    let color = "lime";
     vectors.forEach((v) => {
-        if (centre.distanceTo(v) < r - .01) {
+        if (centre.distanceTo(v) < centre.r - .01) {
             color = "pink"
         }
     })
-    stroke(color);
-    noFill();
-    // circle(centre.x, centre.y, 2 * r);
-    centre.show("noFill", color, 2 * r);
+    centre.show("noFill", color, 2 * centre.r);
 
     // // Construction Visualization 
-    fill("blue");
-    centre.show("black", "white")
+    // fill("blue");
+    // centre.show("black", "white")
 
     // mid2.show("red", "black");
     // mid1.show("red", "black");
@@ -36,9 +33,11 @@ function circ(v1, v2, v3) {
     // stroke("white");
     // line(0, mid1.m * (- mid1.x) + mid1.y, windowWidth, mid1.m * (windowWidth - mid1.x) + mid1.y);
     // line(0, mid2.m * (- mid2.x) + mid2.y, windowWidth, mid2.m * (windowWidth - mid2.x) + mid2.y);
+
+    return color === "lime" ? centre : false;
 }
 
-function intersect(p1, p2) {
-    const x = ((p1.m * p1.x) - (p2.m * p2.x) + p2.y - p1.y) / (p1.m - p2.m);
-    return new Vector(x, p1.m * (x - p1.x) + p1.y);
+function intersect(v1, v2) {
+    const x = ((v1.m * v1.x) - (v2.m * v2.x) + v2.y - v1.y) / (v1.m - v2.m);
+    return new Vector(x, v1.m * (x - v1.x) + v1.y);
 }
