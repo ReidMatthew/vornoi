@@ -3,6 +3,8 @@ const g = 4
 function setup() {
 	createCanvas(windowWidth, windowHeight);
 	randDist(g);
+	let soup = new p5.Vector(1,1,1)
+	console.log(soup)
 }
 
 var bois = [];
@@ -12,6 +14,8 @@ function draw() {
 	show(5)
 	if (bois.length < 3) return;
 	circ(bois[0], bois[1], bois[2])
+
+	// apple()
 }
 
 function randDist(g) {
