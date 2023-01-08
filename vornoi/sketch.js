@@ -1,26 +1,31 @@
 const g = 4
-
+var soup;
 function setup() {
 	createCanvas(windowWidth, windowHeight);
 	randDist(g);
-	let soup = new p5.Vector(1,1,1)
-	console.log(soup)
+	soup = new Vector(100,100,10)
+
+
 }
 
-var bois = [];
-var a = 100;
+var vectors = [];
 function draw() {
-	background(a)
+	basicDraw();
 	show(5)
-	if (bois.length < 3) return;
-	circ(bois[0], bois[1], bois[2])
+	circ(vectors[0], vectors[1], vectors[2])
 
-	// apple()
+	soup.show()
+}
+
+function basicDraw() {
+	background(100);
+	stroke("black");
+	fill("white")
 }
 
 function randDist(g) {
 	for (let i = 0; i < g; i++) {
-		bois.push({
+		vectors.push({
 			x: windowWidth * Math.random(),
 			y: windowHeight * Math.random()
 		})
@@ -30,7 +35,7 @@ function randDist(g) {
 
 function show(r) {
 	fill("white");
-	bois.forEach((v) => {
+	vectors.forEach((v) => {
 		circle(v.x, v.y, r)
 	});
 }
@@ -54,7 +59,7 @@ function circ(p1, p2, p3) {
 
 	let color = "lime",
 		r = distan(i, p1);
-	bois.forEach((v) => {
+	vectors.forEach((v) => {
 		if (distan(i, v) < r - .01) {
 			color = "pink"
 		}
@@ -88,5 +93,5 @@ function distan(p1, p2) {
 }
 
 function mouseClicked(event) {
-	bois.push({ x: mouseX, y: mouseY })
+	vectors.push({ x: mouseX, y: mouseY })
 }
