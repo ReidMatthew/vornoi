@@ -3,43 +3,25 @@ var vectors = [],
 
 function setup() {
 	createCanvas(windowWidth, windowHeight);
-	randDist(20);
+	Delauny.psudoBorderSetup();
+	randDist(50);
+	console.log(delauny)
 }
 
+let b = 100
 function draw() {
-	basicDraw();
+	background(b % 255);
 	showDelauny();
 	showVectors(5)
 }
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= HELPERS =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= \\
-let b = 100
-function basicDraw() {
-	background(++b % 255);
-	stroke("black");
-	fill("white");
-}
 
-function vectorLoop() {
-	if (vectors.length < 3) return;
-
-	let delaunyTemp = [];
-	for (let i = 0; i < vectors.length - 2; i++) {
-		for (let j = 1; j < vectors.length - 1; j++) {
-			for (let k = 2; k < vectors.length; k++) {
-				delaunyTemp.push(isDelauny(vectors[i], vectors[j], vectors[k]));
-			}
-		}
-	}
-
-	delauny = delaunyTemp.filter((v) => v != false && !isNaN(v.r));
-}
 
 function randDist(g) {
 	for (let i = 0; i < g; i++)
 		vectors.push(new Vector(windowWidth * Math.random(), windowHeight * Math.random()));
-
-	vectorLoop();
+	Delauny.process();
 }
 
 function showVectors() {
@@ -50,11 +32,11 @@ function showVectors() {
 
 function showDelauny() {
 	delauny.forEach((v) => {
-		v.show("noFill", 0, v.r * 2);
+		v.show();
 	})
 }
 
 function mouseClicked(event) {
 	vectors.push(new Vector(mouseX, mouseY));
-	vectorLoop();
+	Delauny.process();
 }
