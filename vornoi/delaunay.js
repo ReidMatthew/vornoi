@@ -9,21 +9,17 @@ function isDelauny(v1, v2, v3) {
 
     const centre = intersect(mid1, mid2); // this is the name for the center point in a circle
     centre.r = centre.distanceTo(v1);
-    
+
     let color = "lime";
     vectors.forEach((v) => {
-        if (centre.distanceTo(v) < centre.r - .01) {
-            color = "pink"
-        }
+        if (centre.distanceTo(v) < centre.r - .01)
+            color = "pink";
     })
-    centre.show("noFill", color, 2 * centre.r);
+    if (color === "lime")
+        centre.show("noFill", color, 2 * centre.r);
 
     // // Construction Visualization 
-    // fill("blue");
     // centre.show("black", "white")
-
-    // mid2.show("red", "black");
-    // mid1.show("red", "black");
 
     // stroke("black")
     // line(v1.x, v1.y, v2.x, v2.y);
