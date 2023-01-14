@@ -1,4 +1,4 @@
-class Delauny {
+class Delaunay {
     constructor(centre, triVectors) {
         this.centre = centre; // this is the name for the center point in a circle
         this.centre.r = centre.r * 2;
@@ -49,7 +49,7 @@ class Delauny {
         });
 
         if (valid === true && centre.x)
-            return new Delauny(centre, [v1, v2, v3]);
+            return new Delaunay(centre, [v1, v2, v3]);
 
         return false;
     }
@@ -70,11 +70,15 @@ class Delauny {
         for (let i = 0; i < vectors.length - 2; i++)
             for (let j = 1; j < vectors.length - 1; j++)
                 for (let k = 2; k < vectors.length; k++)
-                    delaunyTemp.push(Delauny.check(vectors[i], vectors[j], vectors[k]));
+                    delaunyTemp.push(Delaunay.check(vectors[i], vectors[j], vectors[k]));
 
         delauny = delaunyTemp.filter((d) => d !== false);
 
         delauny.forEach((d) => d.adjecent());
+    }
+
+    static showAll() {
+
     }
 }
 

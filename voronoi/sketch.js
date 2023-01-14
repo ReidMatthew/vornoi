@@ -3,8 +3,8 @@ var vectors = [],
 
 function setup() {
 	createCanvas(windowWidth, windowHeight);
-	Delauny.psudoBorderSetup();
-	randDist(50);
+	Delaunay.psudoBorderSetup();
+	randDist(10);
 	console.log(delauny)
 }
 
@@ -21,7 +21,7 @@ function draw() {
 function randDist(g) {
 	for (let i = 0; i < g; i++)
 		vectors.push(new Vector(windowWidth * Math.random(), windowHeight * Math.random()));
-	Delauny.process();
+	Delaunay.process();
 }
 
 function showVectors() {
@@ -38,5 +38,5 @@ function showDelauny() {
 
 function mouseClicked(event) {
 	vectors.push(new Vector(mouseX, mouseY));
-	Delauny.process();
+	Delaunay.process();
 }
