@@ -2,12 +2,13 @@ class Delaunay {
     constructor(centre, triVectors) {
         this.centre = centre; // this is the name for the center point in a circle
         this.centre.r = centre.r * 2;
-        this.vectors = triVectors;
-        this.neighboors;
+        this.vectors = Vector.sort(triVectors);
+        this.neighboors = [];
+        this.id = this.centre.id;
     }
 
     show() {
-        this.centre.show("noFill");
+        // this.centre.show("noFill");
 
         this.showConnections();
     }
@@ -17,20 +18,28 @@ class Delaunay {
         this.neighboors.forEach((d) => {
             line(this.centre.x, this.centre.y, d.centre.x, d.centre.y);
         })
+
+        // stroke("blue");
+        // line(this.vectors[0].x, this.vectors[0].y, this.vectors[1].x, this.vectors[1].y);
+        // line(this.vectors[1].x, this.vectors[1].y, this.vectors[2].x, this.vectors[2].y);
+        // line(this.vectors[2].x, this.vectors[2].y, this.vectors[0].x, this.vectors[0].y);
     }
 
     adjecent() {
-        this.neighboors = [];
-        delauny.forEach((d) => {
+        delaunay.forEach((d) => {
             let matches = 0;
             this.vectors.forEach((v) => {
                 if (d.vectors.includes(v))
                     matches++;
             });
 
-            if (matches === 2)
+            if (matches == 2)
                 this.neighboors.push(d);
         });
+    }
+
+    compareWith(d) {
+        return Delaunay.compare(this, d);
     }
 
     static check(v1, v2, v3) {
@@ -44,7 +53,7 @@ class Delaunay {
 
         let valid = true;
         vectors.forEach((v) => {
-            if (centre.distanceTo(v) < centre.r - .01)
+            if (centre.distanceTo(v) < centre.r - Vector.tolerance)
                 valid = false;
         });
 
@@ -62,19 +71,30 @@ class Delaunay {
         vectors.push(new Vector(windowWidth * -1, windowHeight * -1));
     }
 
+    static compare(d1, d2) {
+        return d1.id === d2.id;
+    }
+
     // run the checks and comparisons between all Delaunays
     static process() {
         if (vectors.length < 3) return;
 
-        let delaunyTemp = [];
+        let test,
+            ids = [];
+        delaunay = [];
         for (let i = 0; i < vectors.length - 2; i++)
             for (let j = 1; j < vectors.length - 1; j++)
-                for (let k = 2; k < vectors.length; k++)
-                    delaunyTemp.push(Delaunay.check(vectors[i], vectors[j], vectors[k]));
+                for (let k = 2; k < vectors.length; k++) {
+                    test = Delaunay.check(vectors[i], vectors[j], vectors[k]);
+                    if (test) {
+                        if (!ids.includes(test.id)) {
+                            delaunay.push(test);
+                            ids.push(test.id)
+                        }
+                    }
+                }
 
-        delauny = delaunyTemp.filter((d) => d !== false);
-
-        delauny.forEach((d) => d.adjecent());
+        delaunay.forEach((d) => d.adjecent());
     }
 
     static showAll() {
