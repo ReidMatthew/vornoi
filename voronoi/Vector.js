@@ -1,4 +1,10 @@
 class Vector {
+  /**
+   * An ordered pair (x,y)
+   * @param {Number} x "x" component of the Vector
+   * @param {Number} y "y" component of the Vector
+   * @param {Number} r Radius of the displayed point
+   */
   constructor(x, y, r = 10) {
     this.x = x;
     this.y = y;

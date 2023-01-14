@@ -1,4 +1,9 @@
 class Delaunay {
+    /**
+     * The valid vector trios that define Thesian Polygons
+     * @param {Vector} centre The center point of the Delauny Triangulation
+     * @param {[Vector]} triVectors The three Vectors that make up the circle definition
+     */
     constructor(centre, triVectors) {
         this.centre = centre; // this is the name for the center point in a circle
         this.centre.r = centre.r * 2;

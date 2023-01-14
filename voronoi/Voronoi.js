@@ -1,4 +1,9 @@
 class Voronoi {
+    /**
+     * The Thesian Polygon classes that make up a Voronoi Diagram
+     * @param {Vector} centroid The comparison points of areas that define Thesian Polygons
+     * @param {[Delaunay]} delaunay The array of Delaunay Classes that help describe the Thesian Polygon
+     */
     constructor(centroid, delaunay) {
         this.c = centroid;
         this.d = delaunay;
@@ -40,6 +45,7 @@ class Voronoi {
             default:
                 return;
         }
+        Delaunay.process();
     }
 
     static showAll() {
