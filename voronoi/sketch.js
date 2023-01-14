@@ -1,6 +1,5 @@
-var vectors = [],
-	delaunay = [],
-	vornoi = [],
+var delaunay = [],
+	voronoi = [],
 	id = 0;
 
 function setup() {
@@ -12,36 +11,25 @@ function setup() {
 let b = 100
 function draw() {
 	background(b % 255);
-	showDelauny();
-	showVectors(5)
+	Delaunay.showAll();
+	Voronoi.showAll();
 }
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= HELPERS =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= \\
 
 
-function randDist(g) {
-	for (let i = 0; i < g; i++)
-		vectors.push(new Vector(Math.floor(windowWidth * Math.random()), Math.floor(windowHeight * Math.random())));
+function randDist(n) {
+	for (let i = 0; i < n; i++)
+		Voronoi.addVoronoi();
 	Delaunay.process();
-}
-
-function showVectors() {
-	vectors.forEach((v) => {
-		v.show();
-	});
-}
-
-function showDelauny() {
-	delaunay.forEach((v) => {
-		v.show();
-	})
 }
 
 function mouseClicked(event) {
 	let a = pointClick()
 	if (a) return;
 
-	vectors.push(new Vector(mouseX, mouseY));
+	Voronoi.addVoronoi(mouseX, mouseY);
+
 	Delaunay.process();
 
 	console.log(delaunay)
@@ -61,6 +49,13 @@ function pointClick() {
 			console.log(v);
 			selected = true;
 		}
-	})
+	});
+
+	voronoi.forEach((v) => {
+		if (v.c.distanceTo(new Vector(mouseX, mouseY)) < v.c.r) {
+			console.log(v);
+			selected = true;
+		}
+	});
 	return selected
 }

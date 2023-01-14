@@ -1,16 +1,19 @@
 class Voronoi {
-    constructor(delaunay) {
+    constructor(centroid, delaunay) {
+        this.c = centroid;
         this.d = delaunay;
-        this.centroid = this.d.centre;
-        this.sortVerticies();
-        this.color = this.d.centre.color;
+        // this.sortVerticies();
+        this.color = this.c.color;
+        this.id = this.c.id;
     }
 
     show() {
-        fill(this.centroid.color);
-        beginShape();
-        this.verticies.forEach((v) => vertex(v.x, v.y));
-        endShape(CLOSE);
+        // fill(this.centroid.color);
+        // beginShape();
+        // this.verticies.forEach((v) => vertex(v.x, v.y));
+        // endShape(CLOSE);
+
+        this.c.show();
     }
 
     sortVerticies() {
@@ -20,10 +23,28 @@ class Voronoi {
             - Math.atan2(b.x - this.centroid.x, b.y - this.centroid.y)));
     }
 
+    static addVoronoi() {
+        switch (arguments.length) {
+            case 0:
+                voronoi.push(new Voronoi(new Vector(windowWidth * Math.random(), windowHeight * Math.random())));
+                break;
+            case 1:
+                if (!arguments[0] instanceof Vector)
+                    return;
+                voronoi.push(new Voronoi(arguments[0]));
+                break;
+            case 2:
+                voronoi.push(new Voronoi(new Vector(arguments[0], arguments[1])));
+                break;
+
+            default:
+                return;
+        }
+    }
+
     static showAll() {
         voronoi.forEach((v) => {
             v.show();
-            v.sortVerticies()
         })
     }
 }

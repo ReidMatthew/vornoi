@@ -43,32 +43,34 @@ class Delaunay {
     }
 
     static check(v1, v2, v3) {
-        const mid1 = v1.lerp(v2),
-            mid2 = v1.lerp(v3);
-        mid1.m = Vector.invertSlope(mid1.slopeWith(v1));
-        mid2.m = Vector.invertSlope(mid2.slopeWith(v1));
+        const mid1 = v1.c.lerp(v2.c),
+            mid2 = v1.c.lerp(v3.c);
+        mid1.m = Vector.invertSlope(mid1.slopeWith(v1.c));
+        mid2.m = Vector.invertSlope(mid2.slopeWith(v1.c));
 
         const centre = intersect(mid1, mid2);
-        centre.r = centre.distanceTo(v1);
+        if (!centre)
+            return;
+        centre.r = centre.distanceTo(v1.c);
 
         let valid = true;
-        vectors.forEach((v) => {
-            if (centre.distanceTo(v) < centre.r - Vector.tolerance)
+        voronoi.forEach((v) => {
+            if (centre.distanceTo(v.c) < centre.r - Vector.tolerance)
                 valid = false;
         });
 
-        if (valid === true && centre.x)
-            return new Delaunay(centre, [v1, v2, v3]);
+        if (valid)
+            return new Delaunay(centre, [v1.c, v2.c, v3.c]);
 
         return false;
     }
 
     // by adding four points in each offscreen corner, this "simulates" the offscreen tangent calculations
     static psudoBorderSetup() {
-        vectors.push(new Vector(windowWidth * 2, windowHeight * 2));
-        vectors.push(new Vector(windowWidth * 2, windowHeight * -1));
-        vectors.push(new Vector(windowWidth * -1, windowHeight * 2));
-        vectors.push(new Vector(windowWidth * -1, windowHeight * -1));
+        Voronoi.addVoronoi(new Vector(windowWidth * 2, windowHeight * 2));
+        Voronoi.addVoronoi(new Vector(windowWidth * 2, windowHeight * -1));
+        Voronoi.addVoronoi(new Vector(windowWidth * -1, windowHeight * 2));
+        Voronoi.addVoronoi(new Vector(windowWidth * -1, windowHeight * -1));
     }
 
     static compare(d1, d2) {
@@ -77,15 +79,15 @@ class Delaunay {
 
     // run the checks and comparisons between all Delaunays
     static process() {
-        if (vectors.length < 3) return;
+        if (voronoi.length < 3) return;
 
         let test,
             ids = [];
         delaunay = [];
-        for (let i = 0; i < vectors.length - 2; i++)
-            for (let j = 1; j < vectors.length - 1; j++)
-                for (let k = 2; k < vectors.length; k++) {
-                    test = Delaunay.check(vectors[i], vectors[j], vectors[k]);
+        for (let i = 0; i < voronoi.length - 2; i++)
+            for (let j = 1; j < voronoi.length - 1; j++)
+                for (let k = 2; k < voronoi.length; k++) {
+                    test = Delaunay.check(voronoi[i], voronoi[j], voronoi[k]);
                     if (test) {
                         if (!ids.includes(test.id)) {
                             delaunay.push(test);
@@ -98,11 +100,16 @@ class Delaunay {
     }
 
     static showAll() {
-
+        delaunay.forEach((v) => {
+            v.show();
+        })
     }
 }
 
 function intersect(v1, v2) {
-    const x = ((v1.m * v1.x) - (v2.m * v2.x) + v2.y - v1.y) / (v1.m - v2.m);
-    return new Vector(x, v1.m * (x - v1.x) + v1.y);
+    const x = ((v1.m * v1.x) - (v2.m * v2.x) + v2.y - v1.y) / (v1.m - v2.m),
+        y = v1.m * (x - v1.x) + v1.y,
+        v = new Vector(x, y);
+
+    return v.x ? v : false;
 }
