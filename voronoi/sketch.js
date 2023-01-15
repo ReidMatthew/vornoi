@@ -5,13 +5,13 @@ var delaunay = [],
 function setup() {
 	createCanvas(windowWidth, windowHeight);
 	Delaunay.psudoBorderSetup();
-	randDist(5);
+	randDist(40);
 }
 
 let b = 100
 function draw() {
 	background(b % 255);
-	Delaunay.showAll(true);
+	// Delaunay.showAll(true);
 	Voronoi.showAll();
 }
 
