@@ -27,6 +27,7 @@ function mouseClicked(event) {
 	let a = pointClick()
 	if (a) return;
 
+	a = Voronoi.current(new Vector(mouseX, mouseY));
 	Voronoi.addVoronoi(mouseX, mouseY);
 }
 

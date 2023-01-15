@@ -2,11 +2,9 @@ class Voronoi {
     /**
      * The Thesian Polygon classes that make up a Voronoi Diagram
      * @param {Vector} centroid The comparison points of areas that define Thesian Polygons
-     * @param {[Delaunay]} delaunay The array of Delaunay Classes that help describe the Thesian Polygon
      */
-    constructor(centroid, delaunay) {
+    constructor(centroid) {
         this.c = centroid;
-        this.d = delaunay;
         this.vertex = [];
         this.color = this.c.color;
         this.id = this.c.id;
@@ -54,6 +52,24 @@ class Voronoi {
         voronoi.forEach((v) => {
             v.sortVerticies();
         })
+    }
+
+    static current(vector) {
+        if (voronoi.length === 0)
+            return false;
+        let inside = voronoi[0],
+            dist = windowWidth * windowHeight,
+            temp;
+
+        voronoi.forEach((v) => {
+            temp = v.c.distanceTo(vector);
+            if (temp < dist) {
+                dist = temp;
+                inside = v;
+            }
+        })
+
+        return inside;
     }
 
     static showAll() {
