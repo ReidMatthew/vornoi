@@ -8,9 +8,7 @@ function setup() {
 	randDist(40);
 }
 
-let b = 100
 function draw() {
-	background(b % 255);
 	// Delaunay.showAll(true);
 	Voronoi.showAll();
 }
