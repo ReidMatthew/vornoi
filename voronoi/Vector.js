@@ -37,14 +37,14 @@ class Vector {
   }
 
   // how close two points' componets have to be to be considered the same point
-  static tolerance = .00001;
+  static tolerance = .001;
 
   static compare(v1, v2) {
     return v1.id === v2.id;
   }
 
   static identify(v) {
-    return `${Math.floor(v.x / Vector.tolerance)}-${Math.round(v.y / Vector.tolerance)}`;
+    return `${Math.floor(v.x)}-${Math.round(v.y)}`;
   }
 
   static distance(v1, v2) {

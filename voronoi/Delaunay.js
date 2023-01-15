@@ -12,22 +12,29 @@ class Delaunay {
         this.id = this.centre.id;
     }
 
-    show() {
-        // this.centre.show("noFill");
+    show(edge, triangle, circle) {
+        if (circle)
+            this.centre.show("noFill");
 
-        this.showConnections();
+        if (edge)
+            this.showEdge();
+
+        if (triangle)
+            this.triangle()
     }
 
-    showConnections() {
+    showEdge() {
         stroke("red")
         this.neighboors.forEach((d) => {
             line(this.centre.x, this.centre.y, d.centre.x, d.centre.y);
         })
+    }
 
-        // stroke("blue");
-        // line(this.vectors[0].x, this.vectors[0].y, this.vectors[1].x, this.vectors[1].y);
-        // line(this.vectors[1].x, this.vectors[1].y, this.vectors[2].x, this.vectors[2].y);
-        // line(this.vectors[2].x, this.vectors[2].y, this.vectors[0].x, this.vectors[0].y);
+    showTriangle() {
+        stroke("blue");
+        line(this.vectors[0].x, this.vectors[0].y, this.vectors[1].x, this.vectors[1].y);
+        line(this.vectors[1].x, this.vectors[1].y, this.vectors[2].x, this.vectors[2].y);
+        line(this.vectors[2].x, this.vectors[2].y, this.vectors[0].x, this.vectors[0].y);
     }
 
     adjecent() {
@@ -47,15 +54,25 @@ class Delaunay {
         return Delaunay.compare(this, d);
     }
 
+    /**
+     * Checks the validity of a perspective Delaunay Triangulation
+     * @param {Voronoi} v1 
+     * @param {Voronoi} v2 
+     * @param {Voronoi} v3 
+     */
     static check(v1, v2, v3) {
         const mid1 = v1.c.lerp(v2.c),
             mid2 = v1.c.lerp(v3.c);
+
         mid1.m = Vector.invertSlope(mid1.slopeWith(v1.c));
         mid2.m = Vector.invertSlope(mid2.slopeWith(v1.c));
+        if (mid1.m === "Infinity" || mid1.m === "-Infinity" || mid2.m === "Infinity" || mid2.m === "Infinity")
+            return;
 
         const centre = intersect(mid1, mid2);
         if (!centre)
             return;
+
         centre.r = centre.distanceTo(v1.c);
 
         let valid = true;
@@ -64,8 +81,14 @@ class Delaunay {
                 valid = false;
         });
 
-        if (valid)
+        if (valid) {
+            if (!centre.x)
+                console.log("bbb")
+            v1.vertex.push(centre);
+            v2.vertex.push(centre);
+            v3.vertex.push(centre);
             return new Delaunay(centre, [v1.c, v2.c, v3.c]);
+        }
 
         return false;
     }
@@ -102,11 +125,13 @@ class Delaunay {
                 }
 
         delaunay.forEach((d) => d.adjecent());
+
+        Voronoi.process();
     }
 
-    static showAll() {
+    static showAll(edge = false, triangle = false, circle = false) {
         delaunay.forEach((v) => {
-            v.show();
+            v.show(edge, triangle, circle);
         })
     }
 }
